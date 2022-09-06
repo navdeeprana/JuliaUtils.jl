@@ -1,0 +1,3 @@
+var documenterSearchIndex = {"docs":
+[{"location":"","page":"Home","title":"Home","text":"CurrentModule = JuliaUtils","category":"page"},{"location":"#JuliaUtils","page":"Home","title":"JuliaUtils","text":"","category":"section"},{"location":"","page":"Home","title":"Home","text":"Documentation for JuliaUtils.","category":"page"},{"location":"","page":"Home","title":"Home","text":"","category":"page"},{"location":"","page":"Home","title":"Home","text":"Modules = [JuliaUtils]","category":"page"},{"location":"#JuliaUtils.JuliaUtils","page":"Home","title":"JuliaUtils.JuliaUtils","text":"Main module for JuliaUtils.jl – my julia language utility functions.\n\nExports\n\nread_data\nread_xydata\nwrite_data\nwrite_xydata\n\n\n\n\n\n","category":"module"}]
+}
