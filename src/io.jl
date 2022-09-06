@@ -1,0 +1,43 @@
+using CSV
+using DataFrames
+using HDF5
+
+function read_data(fname; slice = (:, :), dsets = ["phi1", "phi2"])
+    return [h5read(fname, dset, slice) for dset in dsets]
+end
+
+function write_data(fname; mode = "cw", overwrite = true, kwargs...)
+    h5open(fname, mode) do fid
+        for (k, v) in pairs(kwargs)
+            ds = string(k)
+            if haskey(fid, ds) & overwrite
+                delete_object(fid, ds)
+            end
+            fid[ds] = v
+        end
+    end
+end
+
+function read_xydata(fname; delim = " ", header = false, kwargs...)
+    return eachcol(
+        CSV.read(
+            fname,
+            DataFrame;
+            delim = delim,
+            ignorerepeated = true,
+            header = header,
+            ntasks = 1,
+            kwargs...,
+        ),
+    )
+end
+
+function write_xydata(fname, data; kwargs...)
+    return CSV.write(
+        fname,
+        DataFrame(data, :auto),
+        delim = " ",
+        writeheader = false,
+        kwargs...,
+    )
+end
