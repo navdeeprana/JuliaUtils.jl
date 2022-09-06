@@ -29,6 +29,17 @@ function polar_mesh(nr::Integer, lr::Real; nθ = nr, lθ = 2π, r0 = 0, θ0 = 0)
     return r, θ
 end
 
+"""
+Convert cartesian mesh to polar mesh.
+
+$(SIGNATURES)
+"""
+function polar_mesh(x::AbstractVector{T}, y::AbstractMatrix{T}) where {T<:Real}
+    r = hypot.(x, y)
+    θ = atan.(y, x)
+    return r, θ
+end
+
 @inline function periodic_distance(x::T, l::T, hl::T) where {T<:Real}
     @. ifelse(abs(x) > hl, l - x, x)
 end
