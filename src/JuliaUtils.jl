@@ -6,14 +6,19 @@ $(EXPORTS)
 """
 module JuliaUtils
 
-export
-    read_data,
+export read_data,
     read_xydata,
     write_data,
-    write_xydata
+    write_xydata,
+    linspace,
+    cartesian_mesh,
+    polar_mesh,
+    periodic_distance,
+    aperiodic
 
 using DocStringExtensions
 
 include("io.jl")
+include("space.jl")
 
 end
