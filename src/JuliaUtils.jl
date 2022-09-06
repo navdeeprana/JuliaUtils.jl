@@ -12,6 +12,8 @@ export
     write_data,
     write_xydata
 
+using DocStringExtensions
+
 include("io.jl")
 
 end
