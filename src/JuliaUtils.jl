@@ -14,11 +14,14 @@ export read_data,
     cartesian_mesh,
     polar_mesh,
     periodic_distance,
-    aperiodic
+    aperiodic,
+    defect_vector_field,
+    count_topological_charges
 
 using DocStringExtensions
 
 include("io.jl")
 include("space.jl")
+include("defects.jl")
 
 end
