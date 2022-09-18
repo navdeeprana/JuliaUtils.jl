@@ -16,12 +16,15 @@ export read_data,
     periodic_distance,
     aperiodic,
     defect_vector_field,
-    count_topological_charges
+    count_topological_charges,
+    nearest_neighbour_distance,
+    radial_distribution_function
 
 using DocStringExtensions
 
 include("io.jl")
 include("space.jl")
 include("defects.jl")
+include("physics.jl")
 
 end
