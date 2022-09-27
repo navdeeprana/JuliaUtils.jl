@@ -31,7 +31,7 @@ Count all topological zeros for a 2D orientation field.
 
 $(SIGNATURES)
 """
-function count_topological_charges(θ::Array{T,2}; threshold = 0.8 * (2π)) where {T<:Real}
+function count_topological_charges(θ::AbstractArray{T,2}; threshold = 0.8 * (2π)) where {T<:Real}
     nx, ny = size(θ)
     x, y, c = Int[], Int[], Int[]
 
@@ -56,12 +56,12 @@ function count_topological_charges(θ::Array{T,2}; threshold = 0.8 * (2π)) wher
     return x, y, c
 end
 
-function count_topological_charges(u::Array{T,2}, v::Array{T,2}; kwargs...) where {T<:Real}
+function count_topological_charges(u::AbstractArray{T,2}, v::AbstractArray{T,2}; kwargs...) where {T<:Real}
     θ = @. atan(v, u)
     return count_topological_charges(θ; kwargs...)
 end
 
-function count_topological_charges(ϕ::Array{Complex{T},2}; kwargs...) where {T<:Real}
+function count_topological_charges(ϕ::AbstractArray{Complex{T},2}; kwargs...) where {T<:Real}
     θ = @. angle(ϕ)
     return count_topological_charges(θ; kwargs...)
 end
