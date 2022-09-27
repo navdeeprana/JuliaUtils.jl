@@ -27,8 +27,8 @@ function read_xydata(fname; delim = " ", header = false, kwargs...)
             ignorerepeated = true,
             header = header,
             ntasks = 1,
-            kwargs...,
-        ),
+            kwargs...
+        )
     )
 end
 
@@ -38,6 +38,6 @@ function write_xydata(fname, data; kwargs...)
         DataFrame(data, :auto),
         delim = " ",
         writeheader = false,
-        kwargs...,
+        kwargs...
     )
 end
