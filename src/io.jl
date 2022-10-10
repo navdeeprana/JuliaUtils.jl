@@ -18,18 +18,17 @@ function write_data(fname; mode = "cw", overwrite = true, kwargs...)
     end
 end
 
-function read_xydata(fname; delim = " ", header = false, kwargs...)
-    return eachcol(
-        CSV.read(
-            fname,
-            DataFrame;
-            delim = delim,
-            ignorerepeated = true,
-            header = header,
-            ntasks = 1,
-            kwargs...
-        )
+function read_xydata(fname; delim = " ", header = false, fcol = :Column1, ffun = (x -> true), kwargs...)
+    df = CSV.read(
+        fname,
+        DataFrame;
+        delim = delim,
+        ignorerepeated = true,
+        header = header,
+        ntasks = 1,
+        kwargs...
     )
+    return eachcol(filter(fcol => ffun, df))
 end
 
 function write_xydata(fname, data; kwargs...)
