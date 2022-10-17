@@ -18,7 +18,8 @@ export read_data,
     defect_vector_field,
     count_topological_charges,
     nearest_neighbour_distance,
-    radial_distribution_function
+    radial_distribution_function,
+    @repeat
 
 using DocStringExtensions
 
@@ -26,5 +27,6 @@ include("io.jl")
 include("space.jl")
 include("defects.jl")
 include("physics.jl")
+include("macros.jl")
 
 end
