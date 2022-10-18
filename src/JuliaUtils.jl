@@ -29,8 +29,6 @@ include("defects.jl")
 include("physics.jl")
 include("macros.jl")
 
-end
-
 module PyPlotUtils
 
 export colors,
@@ -42,3 +40,6 @@ export colors,
 include("pyplot.jl")
 
 end
+
+end
+
