@@ -30,3 +30,15 @@ include("physics.jl")
 include("macros.jl")
 
 end
+
+module PyPlotUtils
+
+export colors,
+       figax,
+       noticks!,
+       set_fontsize!,
+       set_formatter!
+
+include("pyplot.jl")
+
+end
