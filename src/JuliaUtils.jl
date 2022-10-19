@@ -34,8 +34,8 @@ module PyPlotUtils
 export colors,
        figax,
        noticks!,
-       set_fontsize!,
-       set_formatter!
+       fontsize!,
+       formatter!
 
 include("pyplot.jl")
 
