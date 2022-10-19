@@ -27,14 +27,14 @@ function noticks!(ax; x = false, y = false)
     return nothing
 end
 
-function set_fontsize!(fig::Figure, fontsize)
-    for textobj in fig.findobj(match = (x -> x.__module__ == "matplotlib.text"))
+function fontsize!(ax, fontsize)
+    for textobj in ax.findobj(match = (x -> x.__module__ == "matplotlib.text"))
         textobj.set_fontsize(fontsize)
     end
     return nothing
 end
 
-function set_formatter!(axis, low, high)
+function formatter!(axis, low, high)
     f = matplotlib.ticker.ScalarFormatter()
     f.set_powerlimits((low, high))
     axis.set_major_formatter(f)
