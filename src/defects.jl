@@ -77,9 +77,7 @@ function charge(x, y, θ::AbstractArray{T,2}; Δ = 1) where {T<:Real}
     for (n, (xn, yn)) in enumerate(zip(x, y))
         for Δy in -Δ:+Δ
             for Δx in -Δ:+Δ
-                i, j = xn + Δx, yn + Δy
-                i == 0 ? i = nx : (i == nx ? i = 1 : nothing)
-                j == 0 ? j = ny : (j == ny ? j = 1 : nothing)
+                i, j = mod(xn + Δx - 1, nx), mod(yn + Δy - 1, ny)
                 inext = _get_next(i, nx)
                 jnext = _get_next(j, ny)
                 t1 = θ[i, j]
