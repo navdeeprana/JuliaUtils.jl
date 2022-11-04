@@ -9,7 +9,7 @@ function IJulia.metadata(x::Figure)
     return Dict("image/png" => Dict("width" => w / 2, "height" => h / 2))
 end
 
-function figax(;nx = 1, ny = 1, h = 3, a = 1.6, kwargs...)
+function figax(; nx = 1, ny = 1, h = 3, a = 1.6, kwargs...)
     figsize = (a * h * nx, h * ny)
     fig, ax = plt.subplots(ny, nx; figsize = figsize, kwargs...)
     try

@@ -16,7 +16,8 @@ export read_data,
     periodic_distance,
     aperiodic,
     defect_vector_field,
-    count_topological_charges,
+    find_defects,
+    charge,
     nearest_neighbour_distance,
     radial_distribution_function,
     @repeat
@@ -32,14 +33,13 @@ include("macros.jl")
 module PyPlotUtils
 
 export colors,
-       figax,
-       noticks!,
-       fontsize!,
-       formatter!
+    figax,
+    noticks!,
+    fontsize!,
+    formatter!
 
 include("pyplot.jl")
 
 end
 
 end
-
