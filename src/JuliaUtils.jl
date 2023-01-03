@@ -42,4 +42,12 @@ include("pyplot.jl")
 
 end
 
+module MakieUtils
+
+export figax
+
+include("makie.jl")
+
+end
+
 end
