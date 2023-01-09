@@ -27,9 +27,11 @@ function Correlator(N, D; L = π)
     return Correlator(D, r, cr)
 end
 
-
+# Returns the maximum possible wavenumber for the range kiter.
+# (r)fftfreq omits the largest possible wavenumber so we add one.
 @inline function _kmax(kiter)
-    return round(Int, hypot(maximum(kiter)...)) + 1
+    kmax = maximum(kiter) .+ 1
+    return round(Int, hypot(kmax...)) + 1
 end
 
 function _kgrid(nx::T, xfftfreq::Function) where {T<:Integer}
@@ -51,25 +53,34 @@ end
     return round(Int, hypot(k...)) + 1
 end
 
-function spectrum!(S::Spectrum, kiter::Iterators.ProductIterator, uk::Array{ComplexF64}; preserve = true)
-    N = size(uk)
-
-    uk1 = selectdim(uk, 1, 1)
+# Computes the power spectrum S(k) given the fourier transform uk = ⨏(u) of the data.
+# TODO: Write documentation.
+# The internals differ slightly for a real u and a complex u.
+function spectrum!(
+    S::Spectrum,
+    kiter::Iterators.ProductIterator,
+    uk::Array{ComplexF64},
+    norm;
+    isreal = true,
+    preserve = true
+)
+    N   = size(uk)
+    uk0 = selectdim(uk, 1, 1)
     ukN = selectdim(uk, 1, N[1])
-
-    @. uk1 = sqrt(0.5) * uk1
-    @. ukN = sqrt(0.5) * ukN
+    if isreal
+        @. uk0 = sqrt(0.5) * uk0
+        @. ukN = sqrt(0.5) * ukN
+    end
 
     @inbounds for (i, k) in enumerate(kiter)
         kb = _kbin(k)
         S.sk[kb] = S.sk[kb] + abs2(uk[i])
     end
-    norm = 1.e0 / (2 * (N[1] - 1) * prod(N[2:end]))^2
     @. S.sk = norm * S.sk
 
-    if preserve
-        @. uk1 = uk1 / sqrt(0.5)
+    if isreal & preserve
         @. ukN = ukN / sqrt(0.5)
+        @. uk0 = uk0 / sqrt(0.5)
     end
     nothing
 end
@@ -77,29 +88,34 @@ end
 xfftfreq(nx, ::Val{true})  = rfftfreq(2 * (nx - 1), 2 * (nx - 1))
 xfftfreq(nx, ::Val{false}) = fftfreq(nx, nx)
 
-function setup(uk::T; isukreal = true, L = 2π, kwargs...) where {T<:Array{ComplexF64}}
+function setup(uk::Array{ComplexF64}; isreal = true, L = 2π)
     N = size(uk)
-    kiter, kmax = _kgrid(N..., ((nx) -> xfftfreq(nx, Val(isukreal))))
+    kiter, kmax = _kgrid(N..., ((nx) -> xfftfreq(nx, Val(isreal))))
+    if isreal
+        norm = 1.0 / (2 * (N[1] - 1) * prod(N[2:end]))^2
+    else
+        norm = 1.0 / (2.0 * prod(N)^2)
+    end
     S = Spectrum(kmax, length(N); L = L)
-    return kiter, kmax, S
+    return kiter, kmax, norm, S
 end
 
-function spectrum(uk::Array{ComplexF64}; preserve = true, kwargs...)
-    kiter, kmax, S = setup(uk; kwargs...)
-    spectrum!(S, kiter, uk; preserve)
+function spectrum(uk::Array{ComplexF64}; preserve = true, isreal = true, kwargs...)
+    kiter, kmax, norm, S = setup(uk; isreal, kwargs...)
+    spectrum!(S, kiter, uk, norm; isreal, preserve)
     return S
 end
 
-function spectrum(uk::Tuple{Vararg{Array{ComplexF64}}}; preserve = true, kwargs...)
-    kiter, kmax, S = setup(uk[1]; kwargs...)
+function spectrum(uk::Tuple{Vararg{Array{ComplexF64}}}; preserve = true, isreal = true, kwargs...)
+    kiter, kmax, norm, S = setup(uk[1]; isreal, kwargs...)
     for uki in uk
-        spectrum!(S, kiter, uki; preserve)
+        spectrum!(S, kiter, uki, norm; isreal, preserve)
     end
     return S
 end
 
 function correlation(S::Spectrum; N = 128)
-    C = Correlator(N, S.D, typeof(S.Δk); L = S.L/2)
+    C = Correlator(N, S.D, typeof(S.Δk); L = S.L / 2)
     if D == 2
         @inbounds for (i, r) in enumerate(C.r)
             C.cr[i] = sum((@. S.sk * besselj0(r * S.k)))
