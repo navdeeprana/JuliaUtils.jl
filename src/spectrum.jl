@@ -115,7 +115,7 @@ function spectrum(uk::Tuple{Vararg{Array{ComplexF64}}}; preserve = true, isreal 
 end
 
 function correlation(S::Spectrum; N = 128)
-    C = Correlator(N, S.D, typeof(S.Δk); L = S.L / 2)
+    C = Correlator(N, S.D; L = S.L / 2)
     if D == 2
         @inbounds for (i, r) in enumerate(C.r)
             C.cr[i] = sum((@. S.sk * besselj0(r * S.k)))
