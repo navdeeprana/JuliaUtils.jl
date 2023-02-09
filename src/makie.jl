@@ -10,4 +10,3 @@ function figax(; nx = 1, ny = 1, h = 3, a = 1.6, s = 100, kwargs...)
         return fig, ax
     end
 end
-

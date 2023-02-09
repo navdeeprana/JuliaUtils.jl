@@ -66,3 +66,14 @@ function aperiodic(x::Vector{T}, p = 2π) where {T<:Real}
     end
     return y
 end
+
+"""
+Pick logspaced elements from an array.
+
+$(SIGNATURES)
+"""
+function logspaced(x::AbstractVector; base = 1.2)
+    N = log(length(x)) / log(base)
+    n = unique(floor.(Int, base .^ (1:N)))
+    return x[n]
+end
