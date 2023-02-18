@@ -13,6 +13,7 @@ IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 julia = "1"
