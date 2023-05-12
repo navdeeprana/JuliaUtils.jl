@@ -30,12 +30,7 @@ Compute radial distribution function for a given set of points in a 2D periodic 
 
 $(SIGNATURES)
 """
-function radial_distribution_function(
-    x::Array{T},
-    y::Array{T},
-    L::T;
-    nbin = 256
-) where {T<:Real}
+function radial_distribution_function(x::Array{T}, y::Array{T}, L::T; nbin = 256) where {T<:Real}
     N = length(x)
     hL = 0.5 * L
     dbin = L / nbin

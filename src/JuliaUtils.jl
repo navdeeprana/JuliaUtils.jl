@@ -6,6 +6,8 @@ $(EXPORTS)
 """
 module JuliaUtils
 
+using PrecompileTools
+
 export read_data,
     read_xydata,
     write_data,
@@ -49,6 +51,13 @@ export figax
 
 include("makie.jl")
 
+end
+
+@setup_workload begin
+    @compile_workload begin
+        cartesian_mesh(8, 1.0)
+        polar_mesh(8, 1.0)
+    end
 end
 
 end
