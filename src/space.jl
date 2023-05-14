@@ -24,7 +24,7 @@ Mesh in polar coordinates.
 $(SIGNATURES)
 """
 function polar_mesh(nr::Integer, lr::Real; nθ = nr, lθ = 2π, r0 = 0, θ0 = 0)
-    r = linspace(r0, lr, nx)
+    r = linspace(r0, lr, nr)
     θ = linspace(θ0, lθ, nθ)'
     return r, θ
 end
