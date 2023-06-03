@@ -4,23 +4,28 @@ Main module for `Julia Useful functions`
 $(EXPORTS)
 """
 module JuliaUtils
+   #core exported functions
    export read_data,
       read_xydata,
       write_data,
       write_xydata,
       linspace,
-      logspaced,
+      logspace,
+      logspacedPick,
+      logspacedPick!,
       cartesian_mesh,
       polar_mesh,
       periodic_distance,
       aperiodic,
       defect_vector_field,
       find_defects,
-      charge,
+      chargeAt,
       nearest_neighbour_distance,
       radial_distribution_function,
-      Interp2D
-   
+      Interp2D,
+      order_parameter,
+      @repeat
+
    using DocStringExtensions
    include("io.jl")
    include("space.jl")
@@ -29,7 +34,10 @@ module JuliaUtils
    include("macros.jl")
    include("interpolations.jl")
    include("periodic.jl")
-   
+   include("spectrum.jl")
+   include("pyplot.jl")
+   include("makie.jl")
+
    # include all files recursively from the `src` folder
    # for (root, dirs, files) in walkdir("src")
    #    for file in files
@@ -43,19 +51,22 @@ module JuliaUtils
    #    end
    # end
 
-   module PyPlotUtils
-      export colors,
-         figax,
-         noticks!,
-         fontsize!,
-         formatter!
-         include("pyplot.jl")
-   end
 
-   module MakieUtils
-   export figax
-      include("makie.jl")
-   end
 
+
+   # module PyPlotUtils
+   # export colors,
+   #    figax,
+   #    noticks!,
+   #    fontsize!,
+   #    formatter!
+   #    include("pyplot.jl")
+   # end
+   
+   # module MakieUtils
+   # using DocStringExtensions
+   # export figax
+   #    include("makie.jl")
+   # end
 
 end

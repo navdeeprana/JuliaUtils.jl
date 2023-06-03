@@ -123,9 +123,9 @@ Args:\\
    - `kwargs...` [accepts, `L` size of the box, default is `2π`]\\
 
 !!! note
-   - use `true`  if `data` is real and `uk = rrft(data)`\\
-   - use `false` if `data` is real but `uk = fft(data)`, this use full range of fourier modes and expensive.\\
-   - use `false` if `data` is complex and `uk = fft(data)`\\
+    - use `true`  if `data` is real and `uk = rrft(data)`\\
+    - use `false` if `data` is real but `uk = fft(data)`, this use full range of fourier modes and expensive.\\
+    - use `false` if `data` is complex and `uk = fft(data)`\\
 """
 function isotropic_structure_factor(uk::Array{ComplexF64}; preserve = true, isreal = true, kwargs...)
    kiter, norm, S = _setup(size(uk); isreal, kwargs...)

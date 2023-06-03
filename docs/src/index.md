@@ -4,11 +4,20 @@ CurrentModule = JuliaUtils
 
 # JuliaUtils
 
-Documentation for [JuliaUtils](https://github.com/navdeeprana/JuliaUtils.jl).
+Documentation for [JuliaUtils](https://github.com/pankajpopli/JuliaUtils.jl).
 
-```@index
-```
+## Overview
 
-```@autodocs
-Modules = [JuliaUtils]
-```
+## Instalation
+
+Install this package by using
+add github_repo_url
+
+
+## Devlopers
+
+This repo is currently being devloped by Navdeep Rana and Pankaj Popli.
+
+## Cite
+
+

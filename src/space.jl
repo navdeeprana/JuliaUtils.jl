@@ -1,7 +1,6 @@
 """
----
-numpy like linspace.
 $(TYPEDSIGNATURES)
+numpy like linspace.\\
 Args:\\
 - [Req] x0::Real    (start point)\\
 - [Req] xn::Real    (end point)\\
@@ -14,7 +13,7 @@ function linspace(x0::Real, xn::Real, n::Integer)
    return LinRange(x0, xn, n + 1)[1:end-1]
 end
 """
-$(SIGNATURES)
+$(TYPEDSIGNATURES)
 """
 function logspace(x0::Real, xn::Real, n::Integer;base=10)
    return base.^(range(log(base,x0),stop=log(base,xn),length=n+1)[1:end-1])
@@ -57,9 +56,9 @@ end
 #####################
 
 """
-``Mesh in polar coordinates.``
 $(TYPEDSIGNATURES)
-``Args:``\\
+Mesh in polar coordinates.\\
+Args:\\
 [Req] nr::Integer (# of points in radial direction)
 [Req] lr::Real;   (length of the radius)
 [Opt] nθ = nr     (# of points in θ direction)
@@ -74,13 +73,13 @@ function polar_mesh(nr::Integer, lr::Real; nθ = nr, lθ = 2π, r0 = 0, θ0 = 0)
 end
 
 """
-``Convert cartesian mesh to polar mesh.``
 $(TYPEDSIGNATURES)
-``Args:``\\
+Convert cartesian mesh to polar mesh.\\
+Args:\\
 [Req] x::AbstractVector{T} (explicit x coordinates in classic form, row)\\
 [Req] y::AbstractVector{T} (explicit y coordinates in classic form, col)\\
 [Opt] classic::Bool=false\\
-``Examples:``\\
+Examples:\\
 cartesian_mesh(0:1:10,0:1:10)\\
 """
 function polar_mesh(x::AbstractVector{T}, y::AbstractVector{T}) where {T<:Real}
@@ -91,9 +90,9 @@ end
 #####################
 
 """
-``Picks logspaced elements from given 1D array``
 $(TYPEDSIGNATURES)
-``Args:``\\
+Picks logspaced elements from given 1D array\\
+Args:\\
 [Req] x::AbstractVector;   (input vector of ordered data)\\
 [Opt] base = 1.2  (choose base )
 """
@@ -102,6 +101,10 @@ function logspacedPick(x::AbstractVector{T}; base = 1.2) where {T<:Real}
    n = unique(floor.(Int, base .^ (1:N)))
    return x[n],n
 end
+"""
+$(TYPEDSIGNATURES)
+Picks logspaced elements from given 1D array but modifies the original input data.
+"""
 function logspacedPick!(x::AbstractVector{T}; base = 1.2) where {T<:Real}
    sort!(x) #mutating orginal input vector
    N = log(length(x)) / log(base)
@@ -109,10 +112,10 @@ function logspacedPick!(x::AbstractVector{T}; base = 1.2) where {T<:Real}
    return x[n],n
 end
 """
-``Picks logspaced radial elements from given 2D array after sorting the radius data.``\\
-``Output is in radius^2 format``
 $(TYPEDSIGNATURES)
-``Args:``\\
+Picks logspaced radial elements from given 2D array after sorting the radius data.\\
+Output is in radius^2 format\\
+Args:\\
 [Req] x::AbstractVector;   (input vector x cords; explicit form)\\
 [Req] y::AbstractVector;   (input vector y cords; explicit form)\\
 [Opt] base = 1.2  (choose base)\\
@@ -123,3 +126,4 @@ function logspacedPick(x::AbstractVector{T},y::AbstractVector{T}; base = 1.2) wh
    sort!(r)
    return logspacedPick(r,base=base)
 end
+#####################

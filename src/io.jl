@@ -4,30 +4,29 @@ using HDF5
 using DelimitedFiles
 
 """
+$(TYPEDSIGNATURES)
 !!! note "Efficiency"
-   It is noted that CSV is faster compared to Readdlm package for large files.
-   The loadtxt function defined below uses readdlm.
-   Check the timings using @time macro for your needs.
-   see ["stackoverflow"](https://stackoverflow.com/questions/26810171/is-there-an-equivalent-or-close-to-numpy-loadtxt-for-julia)
+    It is noted that CSV is faster compared to Readdlm package for large files.
+    The loadtxt function defined below uses readdlm.
+    Check the timings using @time macro for your needs.
+    see ["stackoverflow"](https://stackoverflow.com/questions/26810171/is-there-an-equivalent-or-close-to-numpy-loadtxt-for-julia)
 
 !!! warning "Not tested"
-   Read-write using CSV and HDF5 are not tested fully. Use [`loadtxt`](@ref) function for the time being.
-"""
+    Read-write using CSV and HDF5 are not tested fully. Use [`loadtxt`](@ref) function for the time being.\\
 
-"""
 Read from HDF5 file.
-$(TYPEDSIGNATURES)
 Args:\\
 [Req] fname; (filename)
 [Opt] slice = (:, :) (Read HDF5 documentation)\\
-[Opt] dsets = ["phi1", "phi2"] (Read HDF5 documentation)
+[Opt] dsets = ? (Read HDF5 documentation)
 """
 function read_data(fname; slice = (:, :), dsets = ["phi1", "phi2"])
    return [h5read(fname, dset, slice) for dset in dsets]
 end
 """
-Write to HDF5 file.
+
 $(TYPEDSIGNATURES)
+Write to HDF5 file.
 Args:\\
 [Req] fname; (filename)\\
 [Opt] mode = "cw", (Read HDF5 documentation)\\
@@ -46,8 +45,8 @@ function write_data(fname; mode = "cw", overwrite = true, kwargs...)
    end
 end
 """
-Read and XY format data file usig CSV package.
 $(TYPEDSIGNATURES)
+Read and XY format data file usig CSV package.
 Args:\\
 [Req] fname; (filename)\\
 [Opt] delim = " ",   (read documentation for CSV.read)
@@ -69,8 +68,8 @@ function read_xydata(fname; delim = " ", header = false, fcol = :Column1, ffun =
    return eachcol(filter(fcol => ffun, df))
 end
 """
-Wrtie XY format data to a file using CSV package.
 $(TYPEDSIGNATURES)
+Wrtie XY format data to a file using CSV package.\\
 Args:\\
 [Req] fname (filename)\\
 [Opt] data (data to be written)
@@ -86,8 +85,8 @@ function write_xydata(fname, data; kwargs...)
    )
 end
 """
-Read XY format data file using Readdlm package.
 $(TYPEDSIGNATURES)
+Read XY format data file using Readdlm package.\\
 Args:\\
 [Req] fname (filename)\\
 [Opt] skiprow (# of header to be skiped)\\
@@ -105,14 +104,14 @@ function loadtxt(fname; skiprows=0, delim::AbstractChar = '\t',eol::AbstractChar
       kwargs...)
 end
 """
-Write XY format data file using Readdlm package.
 $(TYPEDSIGNATURES)
+Write XY format data file using Readdlm package.\\
 Args:\\
-[Req] fname (filename)\\
-[Req] data (data to be written, Vector/Matrix or an iterable collection of iterable rows)\\
-[Opt] mode = "w" (mode of opening file, "w" = opwn for write)
-[Opt] delim::AbstractChar = '\t',   (seperator)\\
-[Opt] kwargs...   (read documentation for DelimitedFiles.writedlm)\\
+ - `fname` (filename)\\
+ - `data` (data to be written, Vector/Matrix or an iterable collection of iterable rows)\\
+ - `mode = "w"` (mode of opening file, "w" = opwn for write)
+ - `delim::AbstractChar = '\t'`   (seperator)\\
+ - `kwargs...`   (read documentation for DelimitedFiles.writedlm)\\
 """
 function savetxt(fname, data; mode="w", delim::AbstractChar = '\t', kwargs...)
    open(fname, mode) do fid

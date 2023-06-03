@@ -1,6 +1,7 @@
 """
 Compute nearest neighbour distance for a given set of points in a 2D periodic box.
-$(SIGNATURES)
+Useful for finding topological nearest neighbours.
+$(TYPEDSIGNATURES)
 """
 function nearest_neighbour_distance(x::AbstractArray{T}, y::AbstractArray{T}, L::T) where {T<:Real}
    N = length(x)
@@ -26,7 +27,7 @@ end
 
 """
 Compute radial distribution function for a given set of points in a 2D periodic box.
-$(SIGNATURES)
+$(TYPEDSIGNATURES)
 """
 function radial_distribution_function(x::Array{T}, y::Array{T}, L::T; nbin = 256) where {T<:Real}
    N = length(x)
@@ -48,3 +49,25 @@ function radial_distribution_function(x::Array{T}, y::Array{T}, L::T; nbin = 256
    @. gr = gr / (rho * 2 * π * r * dbin)
    return r, gr
 end
+
+"""
+$(TYPEDSIGNATURES)
+Compute order parameter given cartesian components of the field.\\
+Args:\\
+
+   - `u::Vararg{Array{T}}` [cartesian components of the field, accepts arrays of `Float64` or `ComplexF64`]\\
+
+Examples:\\
+
+ - for 3D vector field ` 𝐩 = (u,v,w)`; call the function as `order_parameter(u,v,w)` \\
+ - for tensorial field `𝐐 = [u v; w z]`;  call the function as `order_parameter(u,v,w,z)` \\
+ - Output is a tuple of `(|𝐦|, [⟨u⟩,⟨v⟩,⟨w⟩...])`, where `|𝐦|` is Frobenius norm of input tensor `𝐐` or vector `𝐩`.\\
+"""
+function order_parameter(u::Vararg{Array{T}}) where {T<:Union{Float64,ComplexF64}}
+   op = zeros(T,length(u))
+   for (i, ui) in enumerate(u)
+      op[i] = sum(ui)/length(ui)
+   end
+   return hypot(op...),op
+end
+# https://math.stackexchange.com/questions/1958882/on-the-generalization-of-polar-coordinates-for-n-dimensions

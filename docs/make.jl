@@ -15,7 +15,26 @@ makedocs(;
         assets=String[],
     ),
     pages=[
-        "Home" => "index.md",
+    "Home" => "index.md",
+	"Core utility functions" => [ 
+        "I/O"=> "core/io.md",
+        "Space"=> "core/space.md",
+        "Periodic"=> "core/periodic.md",
+        "Physics"=> "core/physics.md",
+        "Defects"=> "core/defects.md",
+        "Spectrum"=> "core/spectrum.md",
+        "Interpolations"=> "core/interpolations.md"
+        ],
+	"Ploting Utilities" => [
+        "Makie"    => "ploting/makie.md",
+        "PyPlot"   => "ploting/pyplot.md"
+        ],
+	"Macros" =>  "macros/macros.md",
+    "Library" => [
+        "Public" => "library/public.md", 
+        "Internals" => "library/internals.md",
+        "Glossary" => "library/glossary.md"
+        ]
     ],
 )
 

@@ -109,7 +109,7 @@ $(TYPEDSIGNATURES)
 Args:\\
 [Req] u::AbstractArray{T,2}; (Array of cos(θ) values, make sure they are column ordered)\\
 [Req] u::AbstractArray{T,2}; (Array of sin(θ) values, make sure they are column ordered)\\
-[Opt] kwargs... (Same as previously defined)\\
+[Opt] kwargs... (Same as find_defects() function)\\
 """
 function find_defects(u::AbstractArray{T,2}, v::AbstractArray{T,2}; kwargs...) where {T<:Real}
    θ = @. atan(v, u)
@@ -119,8 +119,8 @@ end
 Count all topological zeros for a 2D orientation field given complex field values.
 $(TYPEDSIGNATURES)
 Args:\\
-[Req] ϕ::AbstractArray{Complex{T},2} (Array of cos(θ) + ι sin(θ) values, make sure they are column ordered)\\
-[Opt] kwargs... (Same as previously defined)\\
+[Req] ϕ::AbstractArray{Complex{T},2} (Array of cos(θ) + ι sin(θ), column ordered)\\
+[Opt] kwargs... (Same as find_defects() function)\\
 """
 function find_defects(ϕ::AbstractArray{Complex{T},2}; kwargs...) where {T<:Real}
    θ = @. angle(ϕ)
