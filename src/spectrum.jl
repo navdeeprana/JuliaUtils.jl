@@ -33,26 +33,13 @@ end
 
 # Returns the magnitude of the largest wavenumber for the range kiter.
 # (r)fftfreq omits the largest possible wavenumber so we add one.
-@inline function _kmax(kiter)
-    kmax = maximum(kiter) .+ 1
-    return round(Int, hypot(kmax...)) + 1
-end
+_kmax(kiter) = round(Int, hypot((maximum(kiter) .+ 1)...)) + 1
 
-function _kgrid(nx::T, xfftfreq::Function) where {T<:Integer}
-    return Iterators.product(xfftfreq(nx))
-end
+_kgrid(xfftfreq::Function, nx) = Iterators.product(xfftfreq(nx))
+_kgrid(xfftfreq::Function, nx, ny) = Iterators.product(xfftfreq(nx), fftfreq(ny, ny))
+_kgrid(xfftfreq::Function, nx, ny, nz) = Iterators.product(xfftfreq(nx), fftfreq(ny, ny), fftfreq(nz, nz))
 
-function _kgrid(nx::T, ny::T, xfftfreq::Function) where {T<:Integer}
-    return Iterators.product(xfftfreq(nx), fftfreq(ny, ny))
-end
-
-function _kgrid(nx::T, ny::T, nz::T, xfftfreq::Function) where {T<:Integer}
-    return Iterators.product(xfftfreq(nx), fftfreq(ny, ny), fftfreq(nz, nz))
-end
-
-@inline function _kbin(k::Tuple{Vararg{T}}) where {T<:Real}
-    return round(Int, hypot(k...)) + 1
-end
+_kbin(k) = round(Int, hypot(k...)) + 1
 
 # Computes the structure factor S(k) given the fourier transform uk = ⨏(u) of the data.
 # TODO: Write documentation.
@@ -73,18 +60,18 @@ function structure_factor!(S::IsotropicStructureFactor, kiter::Iterators.Product
         S.sk[kb] = S.sk[kb] + abs2(uk[i])
     end
     @. S.sk = norm * S.sk
-    (isreal & preserve) ? _scale(uk, 1/sqrt(0.5)) : nothing
+    (isreal & preserve) ? _scale(uk, 1 / sqrt(0.5)) : nothing
     return nothing
 end
 
-function budget!( S::IsotropicStructureFactor, kiter::Iterators.ProductIterator, uk::Array{ComplexF64}, vk::Array{ComplexF64}, norm; isreal = true, preserve = true)
+function budget!(S::IsotropicStructureFactor, kiter::Iterators.ProductIterator, uk::Array{ComplexF64}, vk::Array{ComplexF64}, norm; isreal = true, preserve = true)
     isreal ? _scale(uk, 0.5) : nothing
     @inbounds for (i, k) in enumerate(kiter)
         kb = _kbin(k)
-        S.sk[kb] = S.sk[kb] + real(conj(uk[i])*vk[i])
+        S.sk[kb] = S.sk[kb] + real(conj(uk[i]) * vk[i])
     end
     @. S.sk = norm * S.sk
-    (isreal & preserve) ? _scale(uk, 1/0.5) : nothing
+    (isreal & preserve) ? _scale(uk, 1 / 0.5) : nothing
     return nothing
 end
 
@@ -95,7 +82,7 @@ _normalization(N, ::Val{true})  = 1.0 / (2 * (N[1] - 1) * prod(N[2:end]))^2
 _normalization(N, ::Val{false}) = 1.0 / (2.0 * prod(N)^2)
 
 function _setup(N::Tuple{Vararg{Int}}; isreal = true, L = 2π)
-    kiter = _kgrid(N..., ((nx) -> _xfftfreq(nx, Val(isreal))))
+    kiter = _kgrid(((nx) -> _xfftfreq(nx, Val(isreal))), N...)
     S = IsotropicStructureFactor(_kmax(kiter), length(N); L = L)
     return kiter, _normalization(N, Val(isreal)), S
 end
@@ -125,7 +112,7 @@ end
 
 @inline _expintegral(kr, ::Val{1}) = cos(kr)
 @inline _expintegral(kr, ::Val{2}) = besselj0(kr)
-@inline _expintegral(kr, ::Val{3}) = sinc(kr/π)
+@inline _expintegral(kr, ::Val{3}) = sinc(kr / π)
 
 function correlation(S::IsotropicStructureFactor; N = 128)
     C = IsotropicAutoCorrelator(N, S.D; L = S.L / 2)
