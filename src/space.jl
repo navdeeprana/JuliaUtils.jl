@@ -3,9 +3,7 @@ numpy like linspace.
 
 $(SIGNATURES)
 """
-function linspace(x0::Real, xn::Real, n::Integer)
-    return LinRange(x0, xn, n + 1)[1:end-1]
-end
+linspace(x0::Real, xn::Real, n::Integer) = LinRange(x0, xn, n + 1)[1:end-1]
 
 """
 Mesh in cartesian coordinates.
@@ -40,13 +38,9 @@ function polar_mesh(x::AbstractVector{T}, y::AbstractMatrix{T}) where {T<:Real}
     return r, θ
 end
 
-@inline function periodic_distance(x::T, l::T, hl::T) where {T<:Real}
-    @. ifelse(abs(x) > hl, l - x, x)
-end
+@inline periodic_distance(x::T, l::T, hl::T) where {T<:Real} = @. ifelse(abs(x) > hl, l - x, x)
 
-@inline function periodic_distance(x::T, l::T) where {T<:Real}
-    return periodic_distance(x, l, 0.5 * l)
-end
+@inline periodic_distance(x::T, l::T) where {T<:Real} = periodic_distance(x, l, 0.5 * l)
 
 """
 Convert periodic data to an aperiodic one.

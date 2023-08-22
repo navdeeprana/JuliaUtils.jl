@@ -11,11 +11,9 @@ function defect_vector_field(m::Integer, lx, nx; θ0 = 0, kwargs...)
     return u, v
 end
 
-@inline function _get_next(i::T, N::T) where {T<:Integer}
-    i == N ? 1 : i + 1
-end
+@inline _get_next(i, N) = i == N ? 1 : i + 1
 
-@inline function _area(tn::T, t0::T) where {T<:Real}
+@inline function _area(tn, t0)
     dt = tn - t0
     if (dt > π)
         dt = dt - 2π
