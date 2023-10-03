@@ -1,4 +1,4 @@
-using Makie: Figure, Axis, AxisAspect
+using Makie: Axis, AxisAspect, Figure
 
 function figax(; nx = 1, ny = 1, h = 3, a = 1.6, s = 100, kwargs...)
     res = (round(Int, a * s * h * nx), round(Int, s * h * ny))

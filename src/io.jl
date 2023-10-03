@@ -2,9 +2,7 @@ using CSV
 using DataFrames
 using HDF5
 
-function read_data(fname; slice = (:, :), dsets = ["phi1", "phi2"])
-    return [h5read(fname, dset, slice) for dset in dsets]
-end
+read_data(fname, dsets; slice = (:, :)) = [h5read(fname, dset, slice) for dset in dsets]
 
 function write_data(fname; mode = "cw", overwrite = true, kwargs...)
     h5open(fname, mode) do fid

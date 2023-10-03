@@ -6,40 +6,31 @@ $(EXPORTS)
 """
 module JuliaUtils
 
-using PrecompileTools
-
-export read_data,
-    read_xydata,
-    write_data,
-    write_xydata,
-    linspace,
-    logspaced,
-    cartesian_mesh,
-    polar_mesh,
-    periodic_distance,
-    aperiodic,
-    defect_vector_field,
-    find_defects,
-    charge,
-    nearest_neighbour_distance,
-    radial_distribution_function,
-    @repeat
-
 using DocStringExtensions
 
+export read_data, read_xydata, write_data, write_xydata
+
 include("io.jl")
+
+export linspace, logspaced, cartesian_mesh, polar_mesh, periodic_distance, aperiodic
+
 include("space.jl")
+
+export defect_vector_field, find_defects, charge
+
 include("defects.jl")
+
+export nearest_neighbour_distance, radial_distribution_function, @repeat
+
 include("physics.jl")
+
+export @repeat
+
 include("macros.jl")
 
 module PyPlotUtils
 
-export colors,
-    figax,
-    noticks!,
-    fontsize!,
-    formatter!
+export colors, figax, noticks!, fontsize!, formatter!
 
 include("pyplot.jl")
 
@@ -52,6 +43,8 @@ export figax
 include("makie.jl")
 
 end
+
+using PrecompileTools
 
 @setup_workload begin
     @compile_workload begin
