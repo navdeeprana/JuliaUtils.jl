@@ -28,14 +28,6 @@ export @repeat
 
 include("macros.jl")
 
-module PyPlotUtils
-
-export colors, figax, noticks!, fontsize!, formatter!
-
-include("pyplot.jl")
-
-end
-
 module MakieUtils
 
 export figax
